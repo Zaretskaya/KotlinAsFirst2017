@@ -172,7 +172,7 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigitn (n: Int): Int {
+fun fibSequenceDigit (n: Int): Int {
     var l: Int
     var x = 1
     var y = 0

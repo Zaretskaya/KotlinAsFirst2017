@@ -34,9 +34,8 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int):
-        String  {
-    if (age % 100 in 11..19) return "$age лет" else
+fun ageDescription(age: Int): String  {
+    if (age in 11..19) return "$age лет" else
         if ( age % 10 == 0 ) return "$age лет" else
             if (age % 10 in 5..9) return "$age лет" else
                 if (age % 10 in 2..4) return "$age года" else return "$age год"
@@ -51,14 +50,14 @@ fun ageDescription(age: Int):
  */
 fun timeForHalfWay(t1: Double, v1: Double,
                    t2: Double, v2: Double,
-                   t3: Double, v3: Double):
-        Double  {
-    val S = t1 * v1 + t2 * v2 + t3 * v3
-    if (S / 2 < t1 * v1) return (S / (2 * v1)) else
-        if (S / 2 < (t1 * v1 + t2 * v2)) return (t1 + (S / 2 - t1 * v1) / v2) else
-            return ( t1 + ( S / 2 - t1 * v1 ) / v2 )
-
-
+                   t3: Double, v3: Double): Double  {
+    val s1 = v1 * t1
+    val s2 = v2 * t2
+    val s3 = v3 * t3
+    val S = (s1 + s2 + s3) / 2
+    if (S <= s1) return S / v1
+    if ((S > s1) && (S <= s1 + s2)) return (S - s1) / v2 + t1 else
+        return (S - s1 - s2) / v3 + t2 + t1
 }
 
 
@@ -121,10 +120,10 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * Если такой треугольник не существует, вернуть -1.
  */
 fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if (a > b + c || b > a + c || c > a + b) return -1 else
-        if ( sqr(a) == sqr(b) + sqr(c) || sqr(b) == sqr(a) + sqr(c) || sqr(c) == sqr(a) + sqr(b)) return 1 else
-            if ( sqr(c) < sqr(a) + sqr(b) || sqr(a) < sqr(c) + sqr(b) || sqr(b) < sqr(a) + sqr(c)  ) return 2 else return 1
-
+    if (sqr(c) > sqr(a) + sqr(b)) return 2
+    if (sqr(c) == sqr(a) + sqr(b)) return 1
+    if (sqr(c) < sqr(a) + sqr(b)) return 0
+    else return -1
 }
 
 /**

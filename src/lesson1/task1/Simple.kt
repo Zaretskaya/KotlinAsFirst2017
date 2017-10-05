@@ -61,7 +61,7 @@ fun seconds(hours: Int, minutes: Int, seconds: Int): Int = hours * 3600 + minute
  * 1 сажень = 3 аршина = 48 вершков, 1 вершок = 4.445 см.
  */
 fun lengthInMeters(sagenes: Int, arshins: Int, vershoks: Int): Double =
-        vershoks * 48 * 4.445 + arshins * 3 * 48 * 4.445 + sagenes * 1 * 3 * 48 * 4.445
+        vershoks * 0.04445 + arshins * 0.04445 * 16 + sagenes * 0.04445 * 48
 
 /**
  * Тривиальная
@@ -107,8 +107,11 @@ fun travelMinutes(hoursDepart: Int, minutesDepart: Int, hoursArrive: Int, minute
  * Сколько денег будет на счету через 3 года (с учётом сложных процентов)?
  * Например, 100 рублей под 10% годовых превратятся в 133.1 рубля
  */
-fun accountInThreeYears(initial: Int, percent: Int): Double = ( initial * pow ( 100.0 + percent / 100, 3.0 ) )
-
+fun accountInThreeYears(initial: Int, percent: Int): Double {
+    val x = (initial / 100.0 * percent) + initial
+    val y = (x / 100.0 * percent) + x
+    val z = (y / 100.0 * percent) + y ; return z
+}
 /**
  * Простая
  *

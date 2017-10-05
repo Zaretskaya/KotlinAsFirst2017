@@ -104,46 +104,47 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
     if (kingX == rookX || kingY == rookY) n++
     if (Math.abs(kingX - bishopX) == Math.abs(kingY - bishopY)) m++
     when {
-        (n+m)>1 -> return 3
+        (n + m) > 1 -> return 3
         m == 1 -> return 2
         n == 1 -> return 1
         else -> return 0
 
     }
+}
 
-    /**
-     * Простая
-     *
-     * Треугольник задан длинами своих сторон a, b, c.
-     * Проверить, является ли данный треугольник остроугольным (вернуть 0),
-     * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
-     * Если такой треугольник не существует, вернуть -1.
-     */
-    fun triangleKind(a: Double, b: Double, c: Double): Int {
-        if (a > b + c || b > a + c || c > a + b) return -1 else
-            if ( sqr(a) == sqr(b) + sqr(c) || sqr(b) == sqr(a) + sqr(c) || sqr(c) == sqr(a) + sqr(b)) return 1 else
-                if ( sqr(c) < sqr(a) + sqr(b) || sqr(a) < sqr(c) + sqr(b) || sqr(b) < sqr(a) + sqr(c)  ) return 2 else return 1
+/**
+ * Простая
+ *
+ * Треугольник задан длинами своих сторон a, b, c.
+ * Проверить, является ли данный треугольник остроугольным (вернуть 0),
+ * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
+ * Если такой треугольник не существует, вернуть -1.
+ */
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    if (a > b + c || b > a + c || c > a + b) return -1 else
+        if ( sqr(a) == sqr(b) + sqr(c) || sqr(b) == sqr(a) + sqr(c) || sqr(c) == sqr(a) + sqr(b)) return 1 else
+            if ( sqr(c) < sqr(a) + sqr(b) || sqr(a) < sqr(c) + sqr(b) || sqr(b) < sqr(a) + sqr(c)  ) return 2 else return 1
 
-    }
+}
 
-    /**
-     * Средняя
-     *
-     * Даны четыре точки на одной прямой: A, B, C и D.
-     * Координаты точек a, b, c, d соответственно, b >= a, d >= c.
-     * Найти длину пересечения отрезков AB и CD.
-     * Если пересечения нет, вернуть -1.
-     */
-    fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-        when {
-            c > b || d < a -> return -1
-            c in a..b && d in a..b -> return d - c
-            a in c..d && b in c..d -> return b - a
-            c in a..b -> return b - c
-            a in c..d -> return d - a
-            else -> return -1
-        }
+/**
+ * Средняя
+ *
+ * Даны четыре точки на одной прямой: A, B, C и D.
+ * Координаты точек a, b, c, d соответственно, b >= a, d >= c.
+ * Найти длину пересечения отрезков AB и CD.
+ * Если пересечения нет, вернуть -1.
+ */
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    when {
+        c > b || d < a -> return -1
+        c in a..b && d in a..b -> return d - c
+        a in c..d && b in c..d -> return b - a
+        c in a..b -> return b - c
+        a in c..d -> return d - a
+        else -> return -1
     }
 }
+
 
 

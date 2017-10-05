@@ -1,6 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER")
 package lesson3.task1
 
+import lesson1.task1.sqr
+
 /**
  * Пример
  *
@@ -61,6 +63,7 @@ fun digitCountInNumber(n: Int, m: Int): Int =
  * Например, число 1 содержит 1 цифру, 456 -- 3 цифры, 65536 -- 5 цифр.
  */
 fun digitNumber(n: Int): Int = TODO()
+}
 
 /**
  * Простая
@@ -169,4 +172,20 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  * 1123581321345589144...
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigitn (n: Int): Int {
+    var l: Int
+    var x = 1
+    var y = 0
+    do {
+        l = x * x
+        y += digitNumber(l)
+        if (y >= n) break
+        x++
+    }
+        while (true)
+    for (m in 1..y - n) {
+        l /= 10
+    }
+    return l % 10
+
+}

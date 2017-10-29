@@ -179,7 +179,7 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * sin(x) = x - x^3 / 3! + x^5 / 5! - x^7 / 7! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun sin(x: Double, eps: Double) {
+fun sin(x: Double, eps: Double): Double {
     val a = x % (2 * Math.PI)
     var r = 0.0
     var v = 1
@@ -195,6 +195,7 @@ fun sin(x: Double, eps: Double) {
             v += 2
         }
     }
+    return r.toDouble()
 }
 
 

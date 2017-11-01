@@ -66,7 +66,7 @@ fun digitNumber(n: Int): Int {
     var i = 0
     var a = Math.abs(n)
     if (a == 0) return 1
-    else while (a > 0) {
+    while (a > 0) {
          a /= 10
          i++
      }
@@ -81,15 +81,15 @@ fun digitNumber(n: Int): Int {
  */
 fun fib(n: Int): Int {
     if (n <= 2) return 1
-    var a = 1
-    var b = 1
-    var c = 0
+    var fib1 = 1
+    var number = 1
+    var fib2 = 0
     for (i in 2..(n-1)) {
-        c = b
-        b += a
-        a = c
+        fib2 = number
+        number += fib1
+        fib1 = fib2
     }
-    return b
+    return number
 }
 
 
@@ -122,8 +122,8 @@ fun lcm(m: Int, n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     var divisor = 2
-       while (n % divisor!= 0){
-               divisor += 1
+       while (n % divisor!= 0) {
+               divisor++
      }
        return divisor
 
@@ -136,8 +136,8 @@ fun minDivisor(n: Int): Int {
  */
 fun maxDivisor(n: Int): Int {
     var divisor = n - 1
-    while (n % divisor!= 0){
-        divisor -= 1
+    while (n % divisor!= 0) {
+        divisor--
     }
     return divisor
 }
@@ -151,7 +151,7 @@ fun maxDivisor(n: Int): Int {
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
     var t = 0
-     if (m < n) t = m else t = n
+    t = if (m < n) m else n
        for (i in 2..t) {
            if ((m % i == 0) && (n % i == 0)) return false
        }
@@ -195,7 +195,7 @@ fun sin(x: Double, eps: Double): Double {
             v += 2
         }
     }
-    return r.toDouble()
+    return r
 }
 
 
@@ -243,9 +243,8 @@ fun revert(n: Int): Int {
  * первая цифра равна последней, вторая -- предпоследней и так далее.
  * 15751 -- палиндром, 3653 -- нет.
  */
-fun isPalindrome(n: Int): Boolean {
-    return if (n == revert(n)) true else false
-}
+fun isPalindrome(n: Int): Boolean =
+        n == revert(n)
 
 
 /**
@@ -290,7 +289,7 @@ fun squareSequenceDigit(n: Int): Int {
     }
     var p = digitNumber(sqr(square).toInt()) - copy
     var x = sqr(square) / Math.pow(10.0, p.toDouble())
-    return ((x % 10).toInt())
+    return (x % 10).toInt()
 }
 
 /**
@@ -309,5 +308,5 @@ fun fibSequenceDigit (n: Int): Int {
     }
     var p = digitNumber(fib(square)) - copy
     var x = fib(square) / Math.pow(10.0, p.toDouble())
-    return ((x % 10).toInt())
+    return (x % 10).toInt()
 }

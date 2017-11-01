@@ -35,10 +35,13 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
 fun ageDescription(age: Int): String  {
-    if (age % 100 in 11..19) return "$age лет" else
-        if ( age % 10 == 0 ) return "$age лет" else
-            if (age % 10 in 5..9) return "$age лет" else
-                if (age % 10 in 2..4) return "$age года" else return "$age год"
+    when {
+        age % 100 in 11..19 -> return "$age лет"
+        age % 10 == 0 -> return "$age лет"
+        age % 10 in 5..9 -> return "$age лет"
+        age % 10 in 2..4 -> return "$age года"
+        else -> return "$age год"
+    }
 
 }
 /**
@@ -55,9 +58,11 @@ fun timeForHalfWay(t1: Double, v1: Double,
     val s2 = v2 * t2
     val s3 = v3 * t3
     val s = (s1 + s2 + s3) / 2
-    if (s <= s1) return s / v1
-    if ((s > s1) && (s <= s1 + s2)) return (s - s1) / v2 + t1 else
-        return (s - s1 - s2) / v3 + t2 + t1
+    when {
+        s <= s1 -> return s / v1
+        (s > s1) && (s <= s1 + s2) -> return (s - s1) / v2 + t1
+        else -> return (s - s1 - s2) / v3 + t2 + t1
+    }
 }
 
 
@@ -74,14 +79,14 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
     var n = 0
-    var m = 0
+    var m = 2
     if (kingX == rookX1 || kingY == rookY1) n++
     if (kingX == rookX2 || kingY == rookY2) m++
-    when {
-        (n+m)>1 -> return 3
-        m == 1 -> return 2
-        n == 1 -> return 1
-        else -> return 0
+    return when {
+        (n + m)> 1 -> 3
+        m == 1 -> 2
+        n == 1 -> 1
+        else -> 0
     }
 }
 
@@ -100,13 +105,19 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           bishopX: Int, bishopY: Int): Int {
     var n = 0
     var m = 0
-    if (kingX == rookX || kingY == rookY) n++
-    if (Math.abs(kingX - bishopX) == Math.abs(kingY - bishopY)) m++
+    when {
+        kingX == rookX || kingY == rookY -> n++
+    }
+    when {
+        Math.abs(kingX - bishopX) == Math.abs(kingY - bishopY) -> m++
+    }
    return when {
         (n + m) > 1 -> 3
         m == 1 -> 2
         n == 1 -> 1
-        else -> 0
+        else -> {
+            0
+        }
 
     }
 }
@@ -134,16 +145,14 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-   return when {
-        c > b || d < a -> -1
-        c in a..b && d in a..b -> d - c
-        a in c..d && b in c..d -> b - a
-        c in a..b -> b - c
-        a in c..d -> d - a
-        else -> -1
-    }
-}
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int =
+        when {
+            c in a..b && d in a..b -> d - c
+            a in c..d && b in c..d -> b - a
+            c in a..b -> b - c
+            a in c..d -> d - a
+            else -> -1
+ }
 
 
 

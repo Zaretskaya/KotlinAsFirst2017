@@ -2,7 +2,6 @@
 package lesson2.task2
 
 import lesson1.task1.sqr
-import lesson4.task1.abs
 
 /**
  * Пример
@@ -54,6 +53,8 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    return (a <= s && b < +r || a <= r && c <= s || a <= r && b <= s || b <= s && c <= r ||
-            a <= s && c <= r || b <= r && c <= s)
+    return (a <= s && b < +r || a <= r && c <= s || a <= r && b <= s ||
+            b <= s && c <= r || a <= s && c <= r || b <= r && c <= s)
 }
+
+

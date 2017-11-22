@@ -36,9 +36,7 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String  {
     when {
-        age % 100 in 11..19 -> return "$age лет"
-        age % 10 == 0 -> return "$age лет"
-        age % 10 in 5..9 -> return "$age лет"
+        (age % 100 in 11..19) || (age % 10 in 5..9) || (age % 10 == 0) -> return "$age лет"
         age % 10 in 2..4 -> return "$age года"
         else -> return "$age год"
     }
@@ -60,7 +58,7 @@ fun timeForHalfWay(t1: Double, v1: Double,
     val s = (s1 + s2 + s3) / 2
     when {
         s <= s1 -> return s / v1
-        (s > s1) && (s <= s1 + s2) -> return (s - s1) / v2 + t1
+        (s <= s1 + s2) -> return (s - s1) / v2 + t1
         else -> return (s - s1 - s2) / v3 + t2 + t1
     }
 }
@@ -105,12 +103,8 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
                           bishopX: Int, bishopY: Int): Int {
     var n = 0
     var m = 0
-    when {
-        kingX == rookX || kingY == rookY -> n++
-    }
-    when {
-        Math.abs(kingX - bishopX) == Math.abs(kingY - bishopY) -> m++
-    }
+    if (kingX == rookX || kingY == rookY) n++
+    if (Math.abs(kingX - bishopX) == Math.abs(kingY - bishopY)) m++
    return when {
         (n + m) > 1 -> 3
         m == 1 -> 2
@@ -130,12 +124,15 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int {
-    if (sqr(c) > sqr(a) + sqr(b)) return 2
-    if (sqr(c) == sqr(a) + sqr(b)) return 1
-    if (sqr(c) < sqr(a) + sqr(b)) return 0
-    else return -1
+fun triangleKind(a: Double, b: Double, c: Double): Int =
+        when {
+            a > (b + c) || b > (a + c) || c > (b + a) -> -1
+            a * a > (b * b + c * c) || b * b > (a * a + c * c) || c * c > (b * b + a * a) -> 2
+            a * a == (b * b + c * c) || b * b == (a * a + c * c) || c * c == (a * a + b * b) -> 1
+            else -> 0
 }
+
+
 
 /**
  * Средняя

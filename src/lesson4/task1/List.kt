@@ -112,7 +112,7 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
 fun abs(v: List<Double>): Double {
     var b = 0.0
     for (i in 0 until v.size) {
-        b += sqr (v[i])
+        b += sqr(v[i])
     }
     return sqrt(b)
 }
@@ -123,10 +123,13 @@ fun abs(v: List<Double>): Double {
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
 fun mean(list: List<Double>): Double {
-    if (list.isEmpty()) return 0.0
-    list.sum()
-    return list.size.toDouble()
+    var a = 0.0
+    for (element in list) {
+        a += element
+    }
+    return if (list.isEmpty()) a else (a / list.size)
 }
+
 
 /**
  * Средняя
@@ -176,7 +179,7 @@ fun polynom(p: List<Double>, x: Double): Double {
     for (i in 0 until p.size) {
         a = p[i] * pow(x, count)
         count++
-        meaning+= a
+        meaning += a
     }
     return meaning
 }
@@ -195,7 +198,7 @@ fun accumulate(list: MutableList<Double>): MutableList<Double> {
     var a = 0.0
     for (i in 0 until list.size) {
         a += list[i]
-        list [i] = a
+        list[i] = a
     }
     return list
 }
@@ -228,17 +231,9 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  */
 fun factorizeToString(n: Int): String {
-    var c = factorize(n)
-    var a = ""
-    for (i in 0 until c.size) {
-        a += c[i]
-        if (i != c.size - 1) {
-            a += "*"
-        }
+        var a = factorize(n)
+        return a.joinToString("*")
     }
-
-    return a
-}
 
 /**
  * Средняя
@@ -250,7 +245,7 @@ fun factorizeToString(n: Int): String {
 fun convert(n: Int, base: Int): List<Int> {
     val a = mutableListOf<Int>()
     if (n < base) a.add(n)
-        else {
+    else {
         var number = n
         while (number / base >= base) {
             a.add(0, number % base)
@@ -315,7 +310,20 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  * 90 = XC, 100 = C, 400 = CD, 500 = D, 900 = CM, 1000 = M.
  * Например: 23 = XXIII, 44 = XLIV, 100 = C
  */
-fun roman(n: Int): String = TODO()
+fun roman(n: Int): String {
+    var l = n
+    val A = listOf(1,4,5,9,10,40,50,90,100,400,500,900,1000)
+    val R = listOf("I","IV","V","IX","X","XL","L","XC","C","CD","D","CM","M")
+    var i = 12
+    var result = ""
+    while (l > 0) {
+        while (A[i] > l)
+            i--
+        result += R[i]
+        l -= A[i]
+    }
+    return result
+}
 
 /**
  * Очень сложная

@@ -2,6 +2,7 @@
 package lesson3.task1
 
 import lesson1.task1.sqr
+import java.lang.Math.*
 
 /**
  * Пример
@@ -122,9 +123,9 @@ fun lcm(m: Int, n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     var divisor = 2
-       while (n % divisor!= 0) {
-               divisor++
-     }
+       while ((divisor) != 0) {
+           divisor++
+       }
        return divisor
 
 }
@@ -166,10 +167,13 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var x = 0
-    while (x * x < m) x++
-    return (x * x >= m) && (x * x <= n)
+    for (i in 1 .. n){
+        if ((i * i >= m) && (i * i <= n)) return true
+    }
+    return false
 }
+
+
 
 
 /**
@@ -187,13 +191,11 @@ fun sin(x: Double, eps: Double): Double {
     while (Math.abs(Math.pow(a, v.toDouble()) / factorial(v)) >= Math.abs(eps)) {
         if (count % 2 != 0) {
             r += (Math.pow(a, v.toDouble()) / factorial(v))
-            count++
-            v += 2
         } else if (count % 2 == 0) {
             r -= (Math.pow(a, v.toDouble()) / factorial(v))
-            count++
-            v += 2
         }
+        count++
+        v += 2
     }
     return r
 }
@@ -210,7 +212,25 @@ fun sin(x: Double, eps: Double): Double {
  * cos(x) = 1 - x^2 / 2! + x^4 / 4! - x^6 / 6! + ...
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    var k = x
+    var l = 1.0
+    var y = l
+    var i = 0
+     while (abs(k) > 2 * PI){
+        if (k > 0) k -= 2 * PI
+        else k += 2 * PI
+     }
+     while (abs(y) >= eps) {
+        i++
+        y = pow(k,(2 * i).toDouble()) / factorial(2 * i)
+        if (i % 2 == 1) l -= y
+        else l += y
+     }
+        return l
+    }
+
+
 
 /**
  * Средняя
@@ -222,10 +242,7 @@ fun revert(n: Int): Int {
     var i = n
     var a = 1
     var b = 0
-    while (i / 10 > 0){
-        a++
-        i /= 10
-    }
+    a = digitNumber(n)
     i = n
     while (a > 0) {
         b *= 10
@@ -258,10 +275,7 @@ fun hasDifferentDigits(n: Int): Boolean {
     var a = 1
     var last = 0
     var previous = 0
-    while (i / 10 > 0){
-        a++
-        i /= 10
-    }
+    a = digitNumber(n)
     i = n
     last = i % 10
     while (a > 0) {

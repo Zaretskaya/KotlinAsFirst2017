@@ -66,7 +66,21 @@ fun main(args: Array<String>) {
  * День и месяц всегда представлять двумя цифрами, например: 03.04.2011.
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val a = """(\d{1,2}) ([а-я]{3,8}) \d+""".toRegex()
+    val month = listOf("января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+            "августа", "сентября", "октября", "ноября", "декабря")
+
+    if (!str.matches(a)) {
+        return ""
+    }
+    val list = str.split(" ")
+
+    return if (list[1] !in month) {
+        ""
+    } else String.format("%02d.%02d.%d", list[0].toInt(), month.indexOf(list[1]) + 1, list[2].toInt())
+}
+
 
 /**
  * Средняя
@@ -75,7 +89,34 @@ fun dateStrToDigit(str: String): String = TODO()
  * Перевести её в строковый формат вида "15 июля 2016".
  * При неверном формате входной строки вернуть пустую строку
  */
-fun dateDigitToStr(digital: String): String = TODO()
+fun dateDigitToStr(digital: String): String {
+    try {
+        var result = ""
+        val a = digital.split(".")
+        if (a.size > 3) return ""
+        if (a[0].toInt() in 1..31) result += a[0].toInt()
+        result += if (a[1] == "01") " января "
+        else if (a[1] == "02") " февраля "
+        else if (a[1] == "03") " марта "
+        else if (a[1] == "04") " апреля "
+        else if (a[1] == "05") " мая "
+        else if (a[1] == "06") " июня "
+        else if (a[1] == "07") " июля "
+        else if (a[1] == "08") " августа "
+        else if (a[1] == "09") " сентября "
+        else if (a[1] == "10") " октября "
+        else if (a[1] == "11") " ноября "
+        else if (a[1] == "12") " декабря "
+        else return ""
+        result += a[2]
+        return result
+    } catch(e: NumberFormatException) {
+        return ""
+    } catch (e: IndexOutOfBoundsException) {
+        return ""
+    }
+}
+
 
 /**
  * Средняя
@@ -89,7 +130,19 @@ fun dateDigitToStr(digital: String): String = TODO()
  * Все символы в номере, кроме цифр, пробелов и +-(), считать недопустимыми.
  * При неверном формате вернуть пустую строку
  */
-fun flattenPhoneNumber(phone: String): String = TODO()
+fun flattenPhoneNumber(phone: String): String {
+    val result = phone.filter { it != '(' && it != ')' && it != ' ' && it != '-' }
+    for (i in result) {
+        if ((i !in '0'..'9') && (i != '+')) {
+            return ""
+        }
+    }
+    if (result == "+") {
+        return ""
+    }
+    else return result
+}
+
 
 /**
  * Средняя
@@ -101,7 +154,20 @@ fun flattenPhoneNumber(phone: String): String = TODO()
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int = TODO()
+fun bestLongJump(jumps: String): Int {
+    try {
+        val a = jumps.split(" ", "%", "-")
+        var result = -1
+        for (part in a) {
+            if ((part != "") && (part.toInt() > result)) {
+                result = part.toInt()
+            }
+        }
+        return result
+    } catch (e: NumberFormatException) {
+        return -1
+    }
+}
 
 /**
  * Сложная
@@ -113,7 +179,18 @@ fun bestLongJump(jumps: String): Int = TODO()
  * Прочитать строку и вернуть максимальную взятую высоту (230 в примере).
  * При нарушении формата входной строки вернуть -1.
  */
-fun bestHighJump(jumps: String): Int = TODO()
+fun bestHighJump(jumps: String): Int {
+    var maxHigh = -1
+    val a = jumps.split(" ")
+    for (i in 1..a.size - 1 step 2) {
+        for (j in a[i]) {
+            when {
+                (j == '+') && (maxHigh < a[i - 1].toInt()) -> maxHigh = a[i - 1].toInt()
+            }
+        }
+    }
+    return maxHigh
+}
 
 /**
  * Сложная
@@ -124,7 +201,26 @@ fun bestHighJump(jumps: String): Int = TODO()
  * Вернуть значение выражения (6 для примера).
  * Про нарушении формата входной строки бросить исключение IllegalArgumentException
  */
-fun plusMinus(expression: String): Int = TODO()
+fun plusMinus(expression: String): Int {
+    try {
+        var result = 0
+        val a = expression.split(" ")
+        result = a[0].toInt()
+        for (i in 1 until a.size step 2) {
+            when {
+                a[i] == "+" -> result += a[i + 1].toInt()
+                a[i] == "-" -> result -= a[i + 1].toInt()
+                else -> throw   IllegalArgumentException("")
+            }
+        }
+        return result
+    } catch (e: StringIndexOutOfBoundsException) {
+        throw  IllegalArgumentException(expression)
+    } catch(e: NumberFormatException) {
+        throw IllegalArgumentException(expression)
+    }
+}
+
 
 /**
  * Сложная
@@ -135,7 +231,25 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    try {
+        val a = str.toLowerCase().split(" ")
+        var result = -1
+        var i = 0
+        while ((a[i] != a[i + 1]) && (i < a.size)) {
+            i++
+        }
+        when (i) {
+            a.size -> return result
+            else -> for (j in 0 until i) {
+                result += (a[j].length + 1)
+            }
+        }
+        return result + 1
+    } catch (e: IndexOutOfBoundsException) {
+        return -1
+    }
+}
 
 /**
  * Сложная
@@ -148,7 +262,31 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть положительными
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    try {
+        val a = description.split(";")
+        var maximum = 0.0
+        var name = ""
+        for (i in 0 until a.size) {
+            val partsOfParts = a[i].split(" ")
+            if (partsOfParts[partsOfParts.size - 1].toDouble() >= maximum) {
+                maximum = partsOfParts[partsOfParts.size - 1].toDouble()
+                name = ""
+                for (j in 0..partsOfParts.size - 2) name += partsOfParts[j]
+            }
+            /*if (partsOfParts[1].toDouble() > maxCost) {
+                maxCost = partsOfParts[1].toDouble()
+                nameOfMaxCost = partsOfParts[0]
+            }*/
+        }
+        return name
+    } catch (e: NumberFormatException) {
+        return ""
+    }
+        catch (e: IndexOutOfBoundsException) {
+            return ""
+    }
+}
 
 /**
  * Сложная

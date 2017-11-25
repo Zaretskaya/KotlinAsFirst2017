@@ -76,16 +76,11 @@ fun timeForHalfWay(t1: Double, v1: Double,
 fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
-    var n = 0
-    var m = 2
-    if (kingX == rookX1 || kingY == rookY1) n++
-    if (kingX == rookX2 || kingY == rookY2) m++
-    return when {
-        (n + m)> 1 -> 3
-        m == 1 -> 2
-        n == 1 -> 1
-        else -> 0
-    }
+    return if (((kingX == rookX1) || (kingY == rookY1)) && ((kingX !== rookX2) && kingY !== rookY2)) 1
+    else if (((kingX == rookX2) || (kingY == rookY2)) && ((kingX !== rookX1) && kingY !== rookY1)) 2
+    else if (((kingX == rookX2) || (kingY == rookY2)) && ((kingX == rookX1) || kingY == rookY1)) 3
+    else if (((kingX !== rookX2) && (kingY !== rookY2)) && ((kingX !== rookX1) && (kingY !== rookY1))) 0
+    else 9
 }
 
 /**

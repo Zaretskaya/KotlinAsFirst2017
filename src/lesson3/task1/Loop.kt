@@ -123,11 +123,10 @@ fun lcm(m: Int, n: Int): Int {
  */
 fun minDivisor(n: Int): Int {
     var divisor = 2
-       while ((divisor) != 0) {
-           divisor++
-       }
-       return divisor
-
+    while (n % divisor != 0) {
+        divisor += 1
+    }
+    return divisor
 }
 
 /**
@@ -167,11 +166,13 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
 fun squareBetweenExists(m: Int, n: Int): Boolean {
-    for (i in 1 .. n){
-        if ((i * i >= m) && (i * i <= n)) return true
+    var y = 0
+    while (y * y < m) {
+        y++
     }
-    return false
+    return ((y * y >= m) && (y * y <= n))
 }
+
 
 
 

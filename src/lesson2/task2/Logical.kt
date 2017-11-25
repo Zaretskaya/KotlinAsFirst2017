@@ -53,8 +53,19 @@ fun circleInside(x1: Double, y1: Double, r1: Double,
  * Вернуть true, если кирпич пройдёт
  */
 fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
-    return (a <= s && b < +r || a <= r && c <= s || a <= r && b <= s ||
-            b <= s && c <= r || a <= s && c <= r || b <= r && c <= s)
+    var min1 = 0
+    var min2 = 0
+    if ((a <= b) && (a <= c)) {
+        min1 = a
+        min2 = Math.min(b, c)
+    } else if ((c <= a) && (c <= b)) {
+        min1 = c
+        min2 = Math.min(a, b)
+    } else if ((b <= a) && (b <= c)) {
+        min1 = b
+        min2 = Math.min(a, c)
+    }
+    return (((min1 <= s) && (min2 <= r)) || ((min1 <= r) && (min2 <= s)))
 }
 
 

@@ -176,14 +176,23 @@ data class Circle(val center: Point, val radius: Double) {
      *
      * Построить прямую по отрезку
      */
-    fun lineBySegment(s: Segment): Line = TODO()
+    fun lineBySegment(s: Segment): Line {
+            var op = Math.atan2((s.end.y - s.begin.y), (s.end.x - s.begin.x))
+        when {
+            op < 0 -> op += Math.PI
+        }
+        when {
+            op >= Math.PI -> op -= Math.PI
+        }
+            return Line(s.begin, op)
+    }
 
     /**
      * Средняя
      *
      * Построить прямую по двум точкам
      */
-    fun lineByPoints(a: Point, b: Point): Line = TODO()
+    fun lineByPoints(a: Point, b: Point): Line = lineBySegment(Segment(a, b))
 
     /**
      * Сложная
@@ -209,7 +218,11 @@ data class Circle(val center: Point, val radius: Double) {
      * (построить окружность по трём точкам, или
      * построить окружность, описанную вокруг треугольника - эквивалентная задача).
      */
-    fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+    fun circleByThreePoints(a: Point, b: Point, c: Point): Circle {
+        val center = bisectorByPoints(a, b).crossPoint(bisectorByPoints(b, c))
+        return Circle(center, center.distance(a))
+    }
+
 
     /**
      * Очень сложная

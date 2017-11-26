@@ -232,7 +232,7 @@ fun factorize(n: Int): List<Int> {
 fun factorizeToString(n: Int): String {
         var a = factorize(n)
         return a.joinToString("*")
-    }
+}
 
 /**
  * Средняя
@@ -311,8 +311,8 @@ fun decimalFromString(str: String, base: Int): Int = TODO()
  */
 fun roman(n: Int): String {
     var l = n
-    val A = listOf(1,4,5,9,10,40,50,90,100,400,500,900,1000)
-    val R = listOf("I","IV","V","IX","X","XL","L","XC","C","CD","D","CM","M")
+    val A = listOf(1, 4, 5, 9, 10, 40, 50, 90, 100, 400, 500, 900, 1000)
+    val R = listOf("I", "IV", "V", "IX", "X", "XL", "L", "XC", "C", "CD", "D", "CM", "M")
     var i = 12
     var result = ""
     while (l > 0) {

@@ -72,125 +72,144 @@ data class Circle(val center: Point, val radius: Double) {
      * расстояние между их центрами минус сумма их радиусов.
      * Расстояние между пересекающимися окружностями считать равным 0.0.
      */
-    fun distance(other: Circle): Double = TODO()
+    fun distance(other: Circle): Double {
+        when {
+            center.distance(other.center) <= radius + other.radius -> return 0.0
+            else -> return (center.distance(other.center) - (radius + other.radius))
+        }
+    }
+
 
     /**
      * Тривиальная
      *
      * Вернуть true, если и только если окружность содержит данную точку НА себе или ВНУТРИ себя
      */
-    fun contains(p: Point): Boolean = TODO()
+    fun contains(p: Point): Boolean = (sqr(p.x - center.x) + sqr(p.y - center.y) <= sqr(radius))
 }
 
-/**
- * Отрезок между двумя точками
- */
-data class Segment(val begin: Point, val end: Point) {
-    override fun equals(other: Any?) =
-            other is Segment && (begin == other.begin && end == other.end || end == other.begin && begin == other.end)
+    /**
+     * Отрезок между двумя точками
+     */
+    data class Segment(val begin: Point, val end: Point) {
+        override fun equals(other: Any?) =
+                other is Segment && (begin == other.begin && end == other.end || end == other.begin && begin == other.end)
 
-    override fun hashCode() =
-            begin.hashCode() + end.hashCode()
-}
-
-/**
- * Средняя
- *
- * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
- * Если в множестве менее двух точек, бросить IllegalArgumentException
- */
-fun diameter(vararg points: Point): Segment = TODO()
-
-/**
- * Простая
- *
- * Построить окружность по её диаметру, заданному двумя точками
- * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
- */
-fun circleByDiameter(diameter: Segment): Circle = TODO()
-
-/**
- * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
- * Уравнение прямой: (y - point.y) * cos(angle) = (x - point.x) * sin(angle)
- * или: y * cos(angle) = x * sin(angle) + b, где b = point.y * cos(angle) - point.x * sin(angle).
- * Угол наклона обязан находиться в диапазоне от 0 (включительно) до PI (исключительно).
- */
-class Line private constructor(val b: Double, val angle: Double) {
-    init {
-        assert(angle >= 0 && angle < Math.PI) { "Incorrect line angle: $angle" }
+        override fun hashCode() =
+                begin.hashCode() + end.hashCode()
     }
-
-    constructor(point: Point, angle: Double): this(point.y * Math.cos(angle) - point.x * Math.sin(angle), angle)
 
     /**
      * Средняя
      *
-     * Найти точку пересечения с другой линией.
-     * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
+     * Дано множество точек. Вернуть отрезок, соединяющий две наиболее удалённые из них.
+     * Если в множестве менее двух точек, бросить IllegalArgumentException
      */
-    fun crossPoint(other: Line): Point = TODO()
+    fun diameter(vararg points: Point): Point = TODO()
 
-    override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
-
-    override fun hashCode(): Int {
-        var result = b.hashCode()
-        result = 31 * result + angle.hashCode()
-        return result
+    /**
+     * Простая
+     *
+     * Построить окружность по её диаметру, заданному двумя точками
+     * Центр её должен находиться посередине между точками, а радиус составлять половину расстояния между ними
+     */
+    fun circleByDiameter(diameter: Segment): Circle {
+        val r = diameter.begin.distance(diameter.end) / 2.0
+        val x = when {
+            diameter.begin.x > diameter.end.x -> diameter.end.x + ((diameter.begin.x - diameter.end.x) / 2.0)
+            else -> diameter.begin.x + ((diameter.end.x - diameter.begin.x) / 2.0)
+        }
+        val y = when {
+            diameter.begin.y > diameter.end.y -> diameter.end.y + ((diameter.begin.y - diameter.end.y) / 2.0)
+            else -> diameter.begin.y + ((diameter.end.y - diameter.begin.y) / 2.0)
+        }
+        return Circle(Point(x, y), r)
     }
 
-    override fun toString() = "Line(${Math.cos(angle)} * y = ${Math.sin(angle)} * x + $b)"
-}
 
-/**
- * Средняя
- *
- * Построить прямую по отрезку
- */
-fun lineBySegment(s: Segment): Line = TODO()
+    /**
+     * Прямая, заданная точкой point и углом наклона angle (в радианах) по отношению к оси X.
+     * Уравнение прямой: (y - point.y) * cos(angle) = (x - point.x) * sin(angle)
+     * или: y * cos(angle) = x * sin(angle) + b, где b = point.y * cos(angle) - point.x * sin(angle).
+     * Угол наклона обязан находиться в диапазоне от 0 (включительно) до PI (исключительно).
+     */
+    class Line private constructor(val b: Double, val angle: Double) {
+        init {
+            assert(angle >= 0 && angle < Math.PI) { "Incorrect line angle: $angle" }
+        }
 
-/**
- * Средняя
- *
- * Построить прямую по двум точкам
- */
-fun lineByPoints(a: Point, b: Point): Line = TODO()
+        constructor(point: Point, angle: Double) : this(point.y * Math.cos(angle) - point.x * Math.sin(angle), angle)
 
-/**
- * Сложная
- *
- * Построить серединный перпендикуляр по отрезку или по двум точкам
- */
-fun bisectorByPoints(a: Point, b: Point): Line = TODO()
 
-/**
- * Средняя
- *
- * Задан список из n окружностей на плоскости. Найти пару наименее удалённых из них.
- * Если в списке менее двух окружностей, бросить IllegalArgumentException
- */
-fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
+        /**
+         * Средняя
+         *
+         * Найти точку пересечения с другой линией.
+         * Для этого необходимо составить и решить систему из двух уравнений (каждое для своей прямой)
+         */
+        fun crossPoint(other: Line): Point = TODO()
 
-/**
- * Сложная
- *
- * Дано три различные точки. Построить окружность, проходящую через них
- * (все три точки должны лежать НА, а не ВНУТРИ, окружности).
- * Описание алгоритмов см. в Интернете
- * (построить окружность по трём точкам, или
- * построить окружность, описанную вокруг треугольника - эквивалентная задача).
- */
-fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+        override fun equals(other: Any?) = other is Line && angle == other.angle && b == other.b
 
-/**
- * Очень сложная
- *
- * Дано множество точек на плоскости. Найти круг минимального радиуса,
- * содержащий все эти точки. Если множество пустое, бросить IllegalArgumentException.
- * Если множество содержит одну точку, вернуть круг нулевого радиуса с центром в данной точке.
- *
- * Примечание: в зависимости от ситуации, такая окружность может либо проходить через какие-либо
- * три точки данного множества, либо иметь своим диаметром отрезок,
- * соединяющий две самые удалённые точки в данном множестве.
- */
-fun minContainingCircle(vararg points: Point): Circle = TODO()
+        override fun hashCode(): Int {
+            var result = b.hashCode()
+            result = 31 * result + angle.hashCode()
+            return result
+        }
+
+        override fun toString() = "Line(${Math.cos(angle)} * y = ${Math.sin(angle)} * x + $b)"
+    }
+
+    /**
+     * Средняя
+     *
+     * Построить прямую по отрезку
+     */
+    fun lineBySegment(s: Segment): Line = TODO()
+
+    /**
+     * Средняя
+     *
+     * Построить прямую по двум точкам
+     */
+    fun lineByPoints(a: Point, b: Point): Line = TODO()
+
+    /**
+     * Сложная
+     *
+     * Построить серединный перпендикуляр по отрезку или по двум точкам
+     */
+    fun bisectorByPoints(a: Point, b: Point): Line = TODO()
+
+    /**
+     * Средняя
+     *
+     * Задан список из n окружностей на плоскости. Найти пару наименее удалённых из них.
+     * Если в списке менее двух окружностей, бросить IllegalArgumentException
+     */
+    fun findNearestCirclePair(vararg circles: Circle): Pair<Circle, Circle> = TODO()
+
+    /**
+     * Сложная
+     *
+     * Дано три различные точки. Построить окружность, проходящую через них
+     * (все три точки должны лежать НА, а не ВНУТРИ, окружности).
+     * Описание алгоритмов см. в Интернете
+     * (построить окружность по трём точкам, или
+     * построить окружность, описанную вокруг треугольника - эквивалентная задача).
+     */
+    fun circleByThreePoints(a: Point, b: Point, c: Point): Circle = TODO()
+
+    /**
+     * Очень сложная
+     *
+     * Дано множество точек на плоскости. Найти круг минимального радиуса,
+     * содержащий все эти точки. Если множество пустое, бросить IllegalArgumentException.
+     * Если множество содержит одну точку, вернуть круг нулевого радиуса с центром в данной точке.
+     *
+     * Примечание: в зависимости от ситуации, такая окружность может либо проходить через какие-либо
+     * три точки данного множества, либо иметь своим диаметром отрезок,
+     * соединяющий две самые удалённые точки в данном множестве.
+     */
+    fun minContainingCircle(vararg points: Point): Circle = TODO()
 

@@ -85,7 +85,7 @@ fun fib(n: Int): Int {
     var fib1 = 1
     var number = 1
     var fib2 = 0
-    for (i in 2..(n-1)) {
+    for (i in 2 until n) {
         fib2 = number
         number += fib1
         fib1 = fib2
@@ -122,9 +122,12 @@ fun lcm(m: Int, n: Int): Int {
  * Для заданного числа n > 1 найти минимальный делитель, превышающий 1
  */
 fun minDivisor(n: Int): Int {
-    var divisor = 2
-    while (n % divisor != 0) {
-        divisor += 1
+    var divisor = n
+    for (i in 2..Math.sqrt(n.toDouble()).toInt()) {
+        if (n % i == 0) {
+            divisor = i
+            break
+        }
     }
     return divisor
 }
@@ -135,11 +138,10 @@ fun minDivisor(n: Int): Int {
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
 fun maxDivisor(n: Int): Int {
-    var divisor = n - 1
-    while (n % divisor!= 0) {
-        divisor--
-    }
-    return divisor
+    for (i in n/2 downTo Math.sqrt(n.toDouble()).toInt())
+        if(n%i==0)
+            return i
+    return 1
 }
 
 /**
@@ -150,14 +152,14 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    var t = 0
-    t = if (m < n) m else n
+    val t = Math.min(m,n)
        for (i in 2..t) {
            if ((m % i == 0) && (n % i == 0)) return false
        }
     return true
 }
 
+fun sqrOfInt(c: Int): Int = c*c
 /**
  * Простая
  *
@@ -165,18 +167,7 @@ fun isCoPrime(m: Int, n: Int): Boolean {
  * то есть, существует ли такое целое k, что m <= k*k <= n.
  * Например, для интервала 21..28 21 <= 5*5 <= 28, а для интервала 51..61 квадрата не существует.
  */
-fun squareBetweenExists(m: Int, n: Int): Boolean {
-    var y = 0
-    while (y * y < m) {
-        y++
-    }
-    return ((y * y >= m) && (y * y <= n))
-}
-
-
-
-
-
+fun squareBetweenExists(m: Int, n: Int): Boolean = sqrOfInt(Math.sqrt(n.toDouble()).toInt()) in m..n
 /**
  * Средняя
  *
@@ -185,26 +176,22 @@ fun squareBetweenExists(m: Int, n: Int): Boolean {
  * Нужную точность считать достигнутой, если очередной член ряда меньше eps по модулю
  */
 fun sin(x: Double, eps: Double): Double {
-    val a = x % (2 * Math.PI)
-    var r = 0.0
-    var v = 1
-    var count = 1
-    while (Math.abs(Math.pow(a, v.toDouble()) / factorial(v)) >= Math.abs(eps)) {
-        if (count % 2 != 0) {
-            r += (Math.pow(a, v.toDouble()) / factorial(v))
-        } else if (count % 2 == 0) {
-            r -= (Math.pow(a, v.toDouble()) / factorial(v))
-        }
-        count++
-        v += 2
+    var a = x
+    while (Math.abs(a)>2*Math.PI){
+        if (a < 0) a+=2*Math.PI
+        else a-=2*Math.PI
     }
-    return r
+    var n = a
+    var r = n
+    var i = 0
+    while (Math.abs(r)>=eps) {
+        i++
+        r = Math.pow(a, ((2 * i) + 1).toDouble()) / factorial(2 * i + 1)
+        if (i % 2 == 1) n -= r
+        else n += r
+    }
+    return n
 }
-
-
-
-
-
 
 /**
  * Средняя
@@ -218,18 +205,18 @@ fun cos(x: Double, eps: Double): Double {
     var l = 1.0
     var y = l
     var i = 0
-     while (abs(k) > 2 * PI){
+    while (abs(k) > 2 * PI) {
         if (k > 0) k -= 2 * PI
         else k += 2 * PI
-     }
-     while (abs(y) >= eps) {
+    }
+    while (abs(y) >= eps) {
         i++
-        y = pow(k,(2 * i).toDouble()) / factorial(2 * i)
+        y = pow(k, (2 * i).toDouble()) / factorial(2 * i)
         if (i % 2 == 1) l -= y
         else l += y
-     }
-        return l
     }
+    return l
+}
 
 
 
@@ -296,15 +283,19 @@ fun hasDifferentDigits(n: Int): Boolean {
  * Например, 2-я цифра равна 4, 7-я 5, 12-я 6.
  */
 fun squareSequenceDigit(n: Int): Int {
-    var copy = n
-    var square = 1.0
-    while (digitNumber (sqr(square).toInt()) < copy) {
-        copy -= digitNumber(sqr(square).toInt())
-        square++
+    var res = 0
+    var m = res
+    var i = 1
+    while (m < n) {
+        res = sqrOfInt(i)
+        i++
+        m += digitNumber(res)
     }
-    var p = digitNumber(sqr(square).toInt()) - copy
-    var x = sqr(square) / Math.pow(10.0, p.toDouble())
-    return (x % 10).toInt()
+    val b = m - n
+    if (m > n)
+        for (j in 1..b)
+            res /= 10
+    return res % 10
 }
 
 /**
@@ -315,13 +306,17 @@ fun squareSequenceDigit(n: Int): Int {
  * Например, 2-я цифра равна 1, 9-я 2, 14-я 5.
  */
 fun fibSequenceDigit (n: Int): Int {
-    var copy = n
-    var square = 1
-    while (digitNumber (fib(square)) < copy) {
-        copy -= digitNumber(fib(square))
-        square++
+    var res = 0
+    var m = res
+    var i = 1
+    while (m < n) {
+        res = fib(i)
+        i++
+        m += digitNumber(res)
     }
-    var p = digitNumber(fib(square)) - copy
-    var x = fib(square) / Math.pow(10.0, p.toDouble())
-    return (x % 10).toInt()
+    val b = m - n
+    if (m > n)
+        for (j in 1..b)
+            res /= 10
+    return res % 10
 }

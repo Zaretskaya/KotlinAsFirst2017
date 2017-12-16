@@ -230,8 +230,8 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  */
 fun factorizeToString(n: Int): String {
-        var a = factorize(n)
-        return a.joinToString("*")
+    var a = factorize(n)
+    return a.joinToString("*")
 }
 
 /**

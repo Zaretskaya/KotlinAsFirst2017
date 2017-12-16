@@ -91,25 +91,27 @@ fun dateStrToDigit(str: String): String {
  */
 fun dateDigitToStr(digital: String): String {
     try {
-        var result = ""
+        var result = mutableListOf("")
         val a = digital.split(".")
         if (a.size > 3) return ""
-        if (a[0].toInt() in 1..31) result += a[0].toInt()
-        result += if (a[1] == "01") " января "
-        else if (a[1] == "02") " февраля "
-        else if (a[1] == "03") " марта "
-        else if (a[1] == "04") " апреля "
-        else if (a[1] == "05") " мая "
-        else if (a[1] == "06") " июня "
-        else if (a[1] == "07") " июля "
-        else if (a[1] == "08") " августа "
-        else if (a[1] == "09") " сентября "
-        else if (a[1] == "10") " октября "
-        else if (a[1] == "11") " ноября "
-        else if (a[1] == "12") " декабря "
-        else return ""
-        result += a[2]
-        return result
+        if (a[0].toInt() in 1..31) result.add(a[0].toInt().toString())
+        result.add(when {
+            a[1] == "01" -> " января "
+            a[1] == "02" -> " февраля "
+            a[1] == "03" -> " марта "
+            a[1] == "04" -> " апреля "
+            a[1] == "05" -> " мая "
+            a[1] == "06" -> " июня "
+            a[1] == "07" -> " июля "
+            a[1] == "08" -> " августа "
+            a[1] == "09" -> " сентября "
+            a[1] == "10" -> " октября "
+            a[1] == "11" -> " ноября "
+            a[1] == "12" -> " декабря "
+            else -> return ""
+        })
+        result.add(a[2])
+        return result.joinToString("")
     } catch(e: NumberFormatException) {
         return ""
     } catch (e: IndexOutOfBoundsException) {
@@ -155,17 +157,18 @@ fun flattenPhoneNumber(phone: String): String {
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
 fun bestLongJump(jumps: String): Int {
-    try {
+    return try {
         val a = jumps.split(" ", "%", "-")
         var result = -1
         for (part in a) {
-            if ((part != "") && (part.toInt() > result)) {
-                result = part.toInt()
+            val p = part.toInt()
+            if ((part != "") && (p > result)) {
+                result = p
             }
         }
-        return result
+        result
     } catch (e: NumberFormatException) {
-        return -1
+        -1
     }
 }
 
@@ -182,10 +185,11 @@ fun bestLongJump(jumps: String): Int {
 fun bestHighJump(jumps: String): Int {
     var maxHigh = -1
     val a = jumps.split(" ")
-    for (i in 1..a.size - 1 step 2) {
+    for (i in 1 until a.size step 2) {
         for (j in a[i]) {
+            val b = a[i - 1].toInt()
             when {
-                (j == '+') && (maxHigh < a[i - 1].toInt()) -> maxHigh = a[i - 1].toInt()
+                (j == '+') && (maxHigh < b) -> maxHigh = b
             }
         }
     }
@@ -269,8 +273,9 @@ fun mostExpensive(description: String): String {
         var name = ""
         for (i in 0 until a.size) {
             val partsOfParts = a[i].split(" ")
-            if (partsOfParts[partsOfParts.size - 1].toDouble() >= maximum) {
-                maximum = partsOfParts[partsOfParts.size - 1].toDouble()
+            val p = partsOfParts[partsOfParts.size - 1].toDouble()
+            if (p >= maximum) {
+                maximum = p
                 name = ""
                 for (j in 0..partsOfParts.size - 2) name += partsOfParts[j]
             }
@@ -282,9 +287,8 @@ fun mostExpensive(description: String): String {
         return name
     } catch (e: NumberFormatException) {
         return ""
-    }
-        catch (e: IndexOutOfBoundsException) {
-            return ""
+    } catch (e: IndexOutOfBoundsException) {
+        return ""
     }
 }
 

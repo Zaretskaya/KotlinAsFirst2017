@@ -55,11 +55,11 @@ fun timeForHalfWay(t1: Double, v1: Double,
     val s1 = v1 * t1
     val s2 = v2 * t2
     val s3 = v3 * t3
-    val s = (s1 + s2 + s3) / 2
+    val s = (1.0 * (s1 + s2 + s3)) / 2
     return when {
         s <= s1 -> s / v1
-        s <= s1 + s2 -> s - s1 / v2 + t1
-        else -> s - s1 - s2 / v3 + t2 + t1
+        s <= s1 + s2 -> t1 + (s - s1)/v2
+        else -> t1 + t2 + (s - s1 - s2)/v3
     }
 }
 
@@ -77,11 +77,10 @@ fun whichRookThreatens(kingX: Int, kingY: Int,
                        rookX1: Int, rookY1: Int,
                        rookX2: Int, rookY2: Int): Int {
     return when {
-        ((kingX == rookX1) || (kingY == rookY1)) && ((kingX !== rookX2) && kingY !== rookY2) -> 1
-        ((kingX == rookX2) || (kingY == rookY2)) && ((kingX !== rookX1) && kingY !== rookY1) -> 2
-        ((kingX == rookX2) || (kingY == rookY2)) && ((kingX == rookX1) || kingY == rookY1) -> 3
-        ((kingX !== rookX2) && (kingY !== rookY2)) && ((kingX !== rookX1) && (kingY !== rookY1)) -> 0
-        else -> 9
+        (kingX == rookX1 || kingY == rookY1) && (kingX == rookX2 || kingY == rookY2) -> 3
+        kingX == rookX1 || kingY == rookY1 -> 1
+        kingX == rookX2 || kingY == rookY2 -> 2
+        else -> 0
     }
 }
 
@@ -126,7 +125,7 @@ fun triangleKind(a: Double, b: Double, c: Double): Int =
             a * a > (b * b + c * c) || b * b > (a * a + c * c) || c * c > (b * b + a * a) -> 2
             a * a == (b * b + c * c) || b * b == (a * a + c * c) || c * c == (a * a + b * b) -> 1
             else -> 0
-}
+        }
 
 
 

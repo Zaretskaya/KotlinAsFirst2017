@@ -22,15 +22,14 @@ data class Square(val column: Int, val row: Int) {
      * Для клетки не в пределах доски вернуть пустую строку
      */
     fun notation(): String {
-        var a = ""
-        val list = ('a'..'h').toList()
-        when {
-            inside() -> a += row.toString() + list[column - 1]
+        return if (!inside()) ""
+        else {
+            val a = listOf("a", "b", "c", "d", "e", "f", "g", "h")
+            val x = a[column - 1]
+            "$x$row"
         }
-        return a
     }
 }
-
 
 /**
  * Простая

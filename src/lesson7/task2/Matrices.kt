@@ -181,7 +181,22 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
  *
  * 42 ===> 0
  */
-fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> = TODO()
+fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> {
+    val sum = createMatrix(matrix.height, matrix.width, 0)
+    for (row in 0 until  matrix.height) for (column in 0 until  matrix.width) {
+        for (addRow in -1..1) for (addColumn in -1..1) {
+            if (addRow == 0 && addColumn == 0) continue
+            val j = column + addColumn
+            val i = addRow + row
+            if (i !in - 0 until matrix.height || j !in 0 until matrix.width) continue
+            sum[row, column] += matrix[i, j]
+            continue
+        }
+    }
+    return sum
+}
+
+
 
 /**
  * Средняя
@@ -198,7 +213,32 @@ fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> = TODO()
  * 0 0 1 0
  * 0 0 0 0
  */
-fun findHoles(matrix: Matrix<Int>): Holes = TODO()
+fun findHoles(matrix: Matrix<Int>): Holes {
+    val rh = mutableListOf<Int>()
+    for (row in 0 until matrix.height) {
+        val r = mutableListOf<Int>()
+        for (column in 0 until matrix.width) {
+            r.add(matrix[row, column])
+        }
+        when {
+            r.distinct() == listOf(0) -> rh.add(row)
+        }
+    }
+
+    val ch = mutableListOf<Int>()
+    for (column in 0 until matrix.width) {
+        val c = mutableListOf<Int>()
+        for (row in 0 until matrix.height) {
+            c.add(matrix[row, column])
+        }
+        when {
+            c.distinct() == listOf(0) -> ch.add(column)
+        }
+    }
+
+    return Holes(rh, ch)
+}
+
 
 /**
  * Класс для описания местонахождения "дырок" в матрице

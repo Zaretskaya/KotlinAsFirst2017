@@ -95,19 +95,19 @@ fun dateDigitToStr(digital: String): String {
         val a = digital.split(".")
         if (a.size > 3) return ""
         if (a[0].toInt() in 1..31) result.add(a[0].toInt().toString())
-        result.add(when {
-            a[1] == "01" -> " января "
-            a[1] == "02" -> " февраля "
-            a[1] == "03" -> " марта "
-            a[1] == "04" -> " апреля "
-            a[1] == "05" -> " мая "
-            a[1] == "06" -> " июня "
-            a[1] == "07" -> " июля "
-            a[1] == "08" -> " августа "
-            a[1] == "09" -> " сентября "
-            a[1] == "10" -> " октября "
-            a[1] == "11" -> " ноября "
-            a[1] == "12" -> " декабря "
+        result.add(when (a[1]){
+            "01" -> " января "
+            "02" -> " февраля "
+            "03" -> " марта "
+            "04" -> " апреля "
+            "05" -> " мая "
+            "06" -> " июня "
+            "07" -> " июля "
+            "08" -> " августа "
+            "09" -> " сентября "
+            "10" -> " октября "
+            "11" -> " ноября "
+            "12" -> " декабря "
             else -> return ""
         })
         result.add(a[2])
@@ -156,8 +156,7 @@ fun flattenPhoneNumber(phone: String): String {
  * Прочитать строку и вернуть максимальное присутствующее в ней число (717 в примере).
  * При нарушении формата входной строки или при отсутствии в ней чисел, вернуть -1.
  */
-fun bestLongJump(jumps: String): Int {
-    return try {
+fun bestLongJump(jumps: String): Int = try {
         val a = jumps.split(" ", "%", "-")
         var result = -1
         for (part in a) {
@@ -170,10 +169,6 @@ fun bestLongJump(jumps: String): Int {
     } catch (e: NumberFormatException) {
         -1
     }
-}
-
-
-
 /**
  * Сложная
  *

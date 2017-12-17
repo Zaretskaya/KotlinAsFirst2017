@@ -184,7 +184,7 @@ data class Circle(val center: Point, val radius: Double) {
         when {
             op >= Math.PI -> op -= Math.PI
         }
-            return Line(s.begin, op)
+        return Line(s.begin, op)
     }
 
     /**

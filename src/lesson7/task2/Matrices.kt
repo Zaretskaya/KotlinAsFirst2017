@@ -75,7 +75,29 @@ fun generateSpiral(height: Int, width: Int): Matrix<Int> = TODO()
  *  1  2  2  2  2  1
  *  1  1  1  1  1  1
  */
-fun generateRectangles(height: Int, width: Int): Matrix<Int> = TODO()
+fun generateRectangles(height: Int, width: Int): Matrix<Int> {
+    var k = 1
+    val result = createMatrix(height, width, k)
+    var h = height
+    var w = width
+    var i = minOf(h, w) / 2 + minOf(h, w) % 2
+
+    while (i != 0) {
+        for (j in k - 1 until h) {
+            result[j, k - 1] = k
+            result[j, w - 1] = k
+        }
+        for (j in k - 1 until w) {
+            result[h - 1, j] = k
+            result[k - 1, j] = k
+        }
+        h--
+        w--
+        i--
+        k++
+    }
+    return result
+}
 
 /**
  * Сложная
@@ -118,7 +140,29 @@ fun <E> rotate(matrix: Matrix<E>): Matrix<E> = TODO()
  * 1 2 3
  * 3 1 2
  */
-fun isLatinSquare(matrix: Matrix<Int>): Boolean = TODO()
+fun isLatinSquare(matrix: Matrix<Int>): Boolean {
+    val example = mutableSetOf<Int>()
+
+    if (matrix.height != matrix.width) return false
+
+    for (i in 0 until matrix.width) {
+        example.add(i + 1)
+    }
+
+    for (i in 0 until matrix.height) {
+        val resultHorizontal = mutableSetOf<Int>()
+        val resultVertical = mutableSetOf<Int>()
+        for (k in 0 until matrix.width) {
+            resultHorizontal.add(matrix[i, k])
+            resultVertical.add(matrix[k, i])
+        }
+        if (resultHorizontal != example || resultVertical != example) {
+            return false
+        }
+    }
+    return true
+}
+
 
 /**
  * Средняя

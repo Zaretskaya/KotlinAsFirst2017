@@ -3,6 +3,7 @@ package lesson3.task1
 
 import lesson1.task1.sqr
 import java.lang.Math.*
+import kotlin.system.measureTimeMillis
 
 /**
  * Пример
@@ -112,8 +113,7 @@ fun lcm(m: Int, n: Int): Int {
             n1 -= m1
         }
     }
-    val l = m * n / n1
-    return l
+    return m * n / n1
 }
 
 /**
@@ -137,12 +137,11 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    for (i in n/2 downTo Math.sqrt(n.toDouble()).toInt())
-        if(n%i==0)
-            return i
-    return 1
+fun maxDivisor(n: Int): Int  {
+    val minDiv = minDivisor(n)
+    return if(minDiv!=n) n/minDiv else 1
 }
+
 
 /**
  * Простая
@@ -152,11 +151,17 @@ fun maxDivisor(n: Int): Int {
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
 fun isCoPrime(m: Int, n: Int): Boolean {
-    val t = Math.min(m,n)
-       for (i in 2..t) {
-           if ((m % i == 0) && (n % i == 0)) return false
-       }
-    return true
+    var k = m
+    var l = n
+    while (k*l!=0) {
+        if (k>=l) {
+            k%=l
+        }
+        else {
+            l%=k
+        }
+    }
+    return (k+l)==1
 }
 
 fun sqrOfInt(c: Int): Int = c*c
@@ -177,14 +182,14 @@ fun squareBetweenExists(m: Int, n: Int): Boolean = sqrOfInt(Math.sqrt(n.toDouble
  */
 fun sin(x: Double, eps: Double): Double {
     var a = x
-    while (Math.abs(a)>2*Math.PI){
-        if (a < 0) a+=2*Math.PI
-        else a-=2*Math.PI
+    while (Math.abs(a) > 2 * Math.PI) {
+        if (a < 0) a += 2 * Math.PI
+        else a -= 2 * Math.PI
     }
     var n = a
     var r = n
     var i = 0
-    while (Math.abs(r)>=eps) {
+    while (Math.abs(r) >= eps) {
         i++
         r = Math.pow(a, ((2 * i) + 1).toDouble()) / factorial(2 * i + 1)
         if (i % 2 == 1) n -= r

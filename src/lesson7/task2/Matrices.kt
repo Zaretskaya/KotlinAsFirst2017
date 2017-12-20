@@ -1,4 +1,5 @@
 @file:Suppress("UNUSED_PARAMETER")
+
 package lesson7.task2
 
 import lesson7.task1.Matrix
@@ -183,19 +184,18 @@ fun isLatinSquare(matrix: Matrix<Int>): Boolean {
  */
 fun sumNeighbours(matrix: Matrix<Int>): Matrix<Int> {
     val sum = createMatrix(matrix.height, matrix.width, 0)
-    for (row in 0 until  matrix.height) for (column in 0 until  matrix.width) {
+    for (row in 0 until matrix.height) for (column in 0 until matrix.width) {
         for (addRow in -1..1) for (addColumn in -1..1) {
             if (addRow == 0 && addColumn == 0) continue
             val j = column + addColumn
             val i = addRow + row
-            if (i !in - 0 until matrix.height || j !in 0 until matrix.width) continue
+            if (i !in -0 until matrix.height || j !in 0 until matrix.width) continue
             sum[row, column] += matrix[i, j]
             continue
         }
     }
     return sum
 }
-
 
 
 /**

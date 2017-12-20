@@ -39,7 +39,7 @@ interface Matrix<E> {
  * Бросить исключение IllegalArgumentException, если height или width <= 0.
  */
 fun <E> createMatrix(height: Int, width: Int, e: E): Matrix<E> {
-        if ((height <=0) || (width <=0))  throw IllegalArgumentException()
+    if ((height <= 0) || (width <= 0)) throw IllegalArgumentException()
         else return MatrixImpl(height, width, e)
 }
 
@@ -52,10 +52,10 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
     private val cellsValue: MutableMap<Cell, E> = mutableMapOf()
 
     //private val map = mutableMapOf<Cell, E>()
-    private val listValue = MutableList(height*width, {e})
+    private val listValue = MutableList(height * width, { e })
 
     override fun get(row: Int, column: Int): E = if(row in 0 until height && column in 0 until width)
-        listValue[row*width + column] else throw IllegalArgumentException()
+        listValue[row * width + column] else throw IllegalArgumentException()
 
     override fun get(cell: Cell): E  = get(cell.row, cell.column)
 
@@ -64,7 +64,7 @@ class MatrixImpl<E>(override val height: Int, override val width: Int, e: E) : M
     fun inside (cell: Cell) : Boolean = !(cell.row !in 0 until height || cell.column !in 0 until width)
 
     override fun set(row: Int, column: Int, value: E) = if(row in 0 until height && column in 0 until width)
-        listValue[row*width + column] = value else throw IllegalArgumentException()
+        listValue[row * width + column] = value else throw IllegalArgumentException()
 
     override fun set(cell: Cell, value: E) {
         set(cell.row, cell.column, value)

@@ -133,18 +133,16 @@ fun dateDigitToStr(digital: String): String {
  * При неверном формате вернуть пустую строку
  */
 fun flattenPhoneNumber(phone: String): String {
-    val result = phone.filter { it != '(' && it != ')' && it != ' ' && it != '-' }
-    for (i in result) {
-        if ((i !in '0'..'9') && (i != '+')) {
-            return ""
+    if (phone.contains("""\(?""".toRegex()) && phone.contains("""\)?""".toRegex())) {
+        val result = phone.split("-", ",", " ", "(", ")")
+        for (i in result) {
+            if ((!i.matches("""\+?\d+""".toRegex())) && (!i.matches("""""".toRegex()))) {
+                return ""
+            }
         }
-    }
-    if (result == "+") {
-        return ""
-    }
-    else return result
+        return result.joinToString("")
+    } else return ""
 }
-
 
 /**
  * Средняя
@@ -270,7 +268,7 @@ fun mostExpensive(description: String): String {
         var name = ""
         for (i in 0 until a.size) {
             val partsOfParts = a[i].split(" ")
-            val p = partsOfParts[partsOfParts.size - 1].toDouble()
+            val p = partsOfParts[1].toDouble()
             if (p >= maximum) {
                 maximum = p
                 name = ""

@@ -153,15 +153,14 @@ fun maxDivisor(n: Int): Int  {
 fun isCoPrime(m: Int, n: Int): Boolean {
     var k = m
     var l = n
-    while (k*l!=0) {
-        if (k>=l) {
-            k%=l
-        }
-        else {
-            l%=k
+    while (k * l != 0) {
+        if (k >= l) {
+            k %= l
+        } else {
+            l %= k
         }
     }
-    return (k+l)==1
+    return (k + l) == 1
 }
 
 fun sqrOfInt(c: Int): Int = c*c

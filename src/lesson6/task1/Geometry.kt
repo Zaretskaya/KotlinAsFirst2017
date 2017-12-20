@@ -177,7 +177,7 @@ data class Circle(val center: Point, val radius: Double) {
      * Построить прямую по отрезку
      */
     fun lineBySegment(s: Segment): Line {
-            var op = Math.atan2((s.end.y - s.begin.y), (s.end.x - s.begin.x))
+        var op = Math.atan2((s.end.y - s.begin.y), (s.end.x - s.begin.x))
         when {
             op < 0 -> op += Math.PI
         }
@@ -201,7 +201,7 @@ data class Circle(val center: Point, val radius: Double) {
      */
     fun bisectorByPoints(a: Point, b: Point): Line {
         val a = Point((a.x + b.x) / 2, (a.y + b.y) / 2)
-        val angle = (Math.PI / 2 + Math.atan((a.y - b.y) / (a.x - b.x))) % Math.PI
+        val angle = (Math.PI / 2 + Math.atan2((a.y - b.y), (a.x - b.x))) % Math.PI
         return Line(a, angle)
     }
 

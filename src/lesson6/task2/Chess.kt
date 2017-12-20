@@ -26,7 +26,7 @@ data class Square(val column: Int, val row: Int) {
     fun notation(): String {
         return if (!inside()) ""
         else {
-            val a = listOf("a", "b", "c", "d", "e", "f", "g", "h")
+            val a = listOf('a'..'h')
             val x = a[column - 1]
             "$x$row"
         }

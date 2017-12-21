@@ -121,14 +121,17 @@ fun rookOrBishopThreatens(kingX: Int, kingY: Int,
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int =
-        when {
-            a > (b + c) || b > (a + c) || c > (b + a) -> -1
-            a * a > (b * b + c * c) || b * b > (a * a + c * c) || c * c > (b * b + a * a) -> 2
-            a * a == (b * b + c * c) || b * b == (a * a + c * c) || c * c == (a * a + b * b) -> 1
-            else -> 0
-        }
-
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val hypotenuse = maxOf(a, b, c)
+    val kat1 = minOf(a, b, c)
+    val kat2 = a + b + c - hypotenuse - kat1
+    if (kat1 + kat2 < hypotenuse) return -1
+    return when {
+        sqr(hypotenuse) < sqr(kat1) + sqr(kat2) -> 0
+        sqr(hypotenuse) > sqr(kat1) + sqr(kat2) -> 2
+        else -> 1
+    }
+}
 
 
 /**
